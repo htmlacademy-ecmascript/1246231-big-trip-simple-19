@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "eslint src/",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development --open"
+    "start": "webpack-dev-server --mode development --open-app-name 'Firefox'"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",

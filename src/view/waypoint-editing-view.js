@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const createEditingEventTemplate = function () {
+const createWaypointEditingTemplate = function () {
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -159,9 +159,9 @@ const createEditingEventTemplate = function () {
   );
 };
 
-export default class EditingEventView {
+export default class WaypointEditingView {
   getTemplate() {
-    return createEditingEventTemplate();
+    return createWaypointEditingTemplate();
   }
 
   getElement() {

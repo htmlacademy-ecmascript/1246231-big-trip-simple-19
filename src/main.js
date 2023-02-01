@@ -1,4 +1,4 @@
-import WaypointsFilterView from './view/waypoints-filter-view.js';
+import FiltersView from './view/filters-view.js';
 import { render } from './render.js';
 import TripPresenter from './presenter/trip-presenter.js';
 
@@ -7,6 +7,6 @@ const siteTripBody = document.querySelector('.trip-events');
 
 const tripPresenter = new TripPresenter(siteTripBody);
 
-render(new WaypointsFilterView(), siteFiltersElement);
+render(new FiltersView(), siteFiltersElement);
 
 tripPresenter.init();

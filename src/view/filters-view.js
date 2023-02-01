@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-const createWaypointsFilterTemplate = function () {
+const createFiltersTemplate = function () {
   return (
     `<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
@@ -36,9 +36,9 @@ const createWaypointsFilterTemplate = function () {
   );
 };
 
-export default class WaypointsFilterView {
+export default class FiltersView {
   getTemplate() {
-    return createWaypointsFilterTemplate();
+    return createFiltersTemplate();
   }
 
   getElement() {

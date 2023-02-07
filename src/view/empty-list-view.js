@@ -1,12 +1,10 @@
 import { createElement } from '../render.js';
 
-const createWaypointsListTemplate = function () {
-  return ('<ul class="trip-events__list"></ul>');
-};
+const createEmptyListTemplate = () => '<p class="trip-events__msg">Click New Event to create your first point</p>';
 
-export default class WaypointsListView {
+export default class EmptyListView {
   getTemplate() {
-    return createWaypointsListTemplate();
+    return createEmptyListTemplate();
   }
 
   getElement() {

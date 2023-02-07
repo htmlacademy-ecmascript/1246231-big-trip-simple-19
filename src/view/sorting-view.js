@@ -1,8 +1,7 @@
 import { createElement } from '../render.js';
 
-const createWaypointsSortingTemplate = function () {
-  return (
-    `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+const createSortingTemplate = () => (
+  `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <div class="trip-sort__item  trip-sort__item--day">
         <input
           id="sort-day"
@@ -73,12 +72,11 @@ const createWaypointsSortingTemplate = function () {
         </label>
       </div>
     </form>`
-  );
-};
+);
 
-export default class WaypointsSortingView {
+export default class SortingView {
   getTemplate() {
-    return createWaypointsSortingTemplate();
+    return createSortingTemplate();
   }
 
   getElement() {

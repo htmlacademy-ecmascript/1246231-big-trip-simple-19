@@ -1,8 +1,7 @@
 import { createElement } from '../render.js';
 
-const createSortingTemplate = function () {
-  return (
-    `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+const createSortingTemplate = () => (
+  `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <div class="trip-sort__item  trip-sort__item--day">
         <input
           id="sort-day"
@@ -73,8 +72,7 @@ const createSortingTemplate = function () {
         </label>
       </div>
     </form>`
-  );
-};
+);
 
 export default class SortingView {
   getTemplate() {

@@ -1,10 +1,10 @@
 import { createElement } from '../render.js';
 
-const createTravelListTemplate = () => ('<ul class="trip-events__list"></ul>');
+const createLoadingTemplate = () => '<p class="trip-events__msg">Loading...</p>';
 
-export default class TravelListView {
+export default class LoadingView {
   getTemplate() {
-    return createTravelListTemplate();
+    return createLoadingTemplate();
   }
 
   getElement() {

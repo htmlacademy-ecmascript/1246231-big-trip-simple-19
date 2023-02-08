@@ -1,10 +1,9 @@
 import TravelListView from '../view/travel-list-view.js';
-import SortingView from '../view/sorting-view.js';
 import WaypointView from '../view/waypoint-view.js';
 import EditingWaypointView from '../view/editing-waypoint-view.js';
 import AddingWaypointView from '../view/adding-waypoint-view.js';
 import EmptyListView from '../view/empty-list-view';
-import { render, RenderPosition } from '../render.js';
+import { render, replace, RenderPosition} from '../framework/render.js';
 import { isEscapeKey } from '../util.js';
 
 export default class TripPresenter {
@@ -14,7 +13,7 @@ export default class TripPresenter {
   #pointsModel = null;
   #listPoints = [];
 
-  constructor({ pointsContainer, pointsModel }) {
+  constructor({pointsContainer, pointsModel}) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel;
   }
@@ -31,7 +30,6 @@ export default class TripPresenter {
       return;
     }
 
-    render(new SortingView(), this.#pointsContainer);
     render(this.#pointListComponent, this.#pointsContainer);
     render(new AddingWaypointView(), this.#pointListComponent.element, RenderPosition.AFTERBEGIN);
 
@@ -39,41 +37,42 @@ export default class TripPresenter {
   }
 
   #renderPoint(point) {
-    const pointComponent = new WaypointView({ point });
-    const pointEditComponent = new EditingWaypointView({ point });
-
-    const pointRollupBtn = pointComponent.element.querySelector('.event__rollup-btn');
-    const editPointForm = pointEditComponent.element.querySelector('form');
-    const editRollupBtn = editPointForm.querySelector('.event__rollup-btn');
-
-    const replacePointToEditForm = () => {
-      this.#pointListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
-      editRollupBtn.addEventListener('click', onCloseEditPointForm);
-      editPointForm.addEventListener('submit', onCloseEditPointForm);
-      document.addEventListener('keydown', onEscKeyDown);
-    };
-
-    const replaceEditFormToPoint = () => {
-      this.#pointListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
-      editRollupBtn.removeEventListener('click', onCloseEditPointForm);
-      editPointForm.removeEventListener('submit', onCloseEditPointForm);
-      document.removeEventListener('keydown', onEscKeyDown);
-    };
 
     function onEscKeyDown(evt) {
       if (isEscapeKey) {
-        onCloseEditPointForm(evt);
+        evt.preventDefault();
+        replaceEditFormToPoint();
+        document.removeEventListener('keydown', onEscKeyDown);
       }
     }
 
-    function onCloseEditPointForm(evt) {
-      evt.preventDefault();
-      replaceEditFormToPoint();
+    const pointComponent = new WaypointView({
+      point,
+      onRollupBtnClick: () => {
+        replacePointToEditForm.call(this);
+        document.addEventListener('keydown', onEscKeyDown);
+      }
+    });
+
+    const pointEditComponent = new EditingWaypointView({
+      point,
+      onFormSubmit: () => {
+        replaceEditFormToPoint.call(this);
+        document.removeEventListener('keydown', onEscKeyDown);
+      },
+      onRollupBtnClick: () => {
+        replaceEditFormToPoint.call(this);
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    });
+
+    function replacePointToEditForm () {
+      replace(pointEditComponent, pointComponent);
     }
 
-    pointRollupBtn.addEventListener('click', () => {
-      replacePointToEditForm();
-    });
+    function replaceEditFormToPoint () {
+      replace(pointComponent, pointEditComponent);
+    }
 
     render(pointComponent, this.#pointListComponent.element);
   }

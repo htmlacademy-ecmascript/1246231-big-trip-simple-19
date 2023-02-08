@@ -1,7 +1,7 @@
-import {createElement} from '../render.js';
 import { destinations, offersByType } from '../mock/point.js';
-import dayjs from 'dayjs';
-import { DATE_FORMAT_DATE, DATE_FORMAT_TIME} from '../const.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { getDayAndMonth, getTime } from '../utils/dates.js';
+
 
 const createPointTemplate = (point) =>{
   const {type, offers, destination, basePrice, dateFrom, dateTo} = point;
@@ -25,22 +25,19 @@ const createPointTemplate = (point) =>{
   }
 
 
-  const parceDateStart = dayjs(dateFrom);
-  const parceDateEnd = dayjs(dateTo);
-
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${dateFrom}">${parceDateStart.format(DATE_FORMAT_DATE)}</time>
+        <time class="event__date" datetime="${dateFrom}">${getDayAndMonth(dateFrom)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${pointDestination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${dateFrom}">${parceDateStart.format(DATE_FORMAT_TIME)}</time>
+            <time class="event__start-time" datetime="${dateFrom}">${getTime(dateFrom)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${dateTo}">${parceDateEnd.format(DATE_FORMAT_TIME)}</time>
+            <time class="event__end-time" datetime="${dateTo}">${getTime(dateTo)}</time>
           </p>
         </div>
         <p class="event__price">
@@ -58,27 +55,25 @@ const createPointTemplate = (point) =>{
     `);
 };
 
-export default class PointView {
-  #element = null;
+export default class PointView extends AbstractView {
   #point = null;
+  #handleRollupBtnClick = null;
 
-  constructor({point}) {
+  constructor({point, onRollupBtnClick}) {
+    super();
     this.#point = point;
+    this.#handleRollupBtnClick = onRollupBtnClick;
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#rollupBtnClickHandler);
   }
 
   get template() {
     return createPointTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #rollupBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollupBtnClick();
+  };
 }

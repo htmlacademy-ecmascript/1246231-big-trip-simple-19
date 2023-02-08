@@ -1,5 +1,4 @@
-
-import { getRandomInteger, getRandomArrayElement } from './util.js';
+import { getRandomInteger, getRandomArrayElement } from './utils.js';
 import { POINTS_TYPES } from './const.js';
 import { getRandomDates } from './dates.js';
 import { getDestination } from './destination.js';
@@ -13,6 +12,9 @@ const BasePrice = {
   MAX: 2000
 };
 
+const POINTS_COUNT = 5;
+
+//если делать это в функции, то генерируются разные массивы в представлениях point-view и edit-point-view, что ломает правильное отображение данных на странице. Поэтому  удобнее оставить данные в костантах.
 const offersByType = Array.from({ length: OFFERS_BY_TYPE_COUNT }, getOfferByType);
 const destinations = Array.from({ length: DESTINATIONS_COUNT }, (value, index) => getDestination(index));
 
@@ -40,10 +42,11 @@ const getRandomPoint = (count) => {
     dateTo: randomDates.dateTo,
     destination: getRandomArrayElement(destinations).id,
     id: count,
-    isFavorite: false,
     offers: getRandomOffersIds(),
     type: getRandomArrayElement(POINTS_TYPES)
   };
 };
 
-export {getRandomPoint, offersByType, destinations};
+const getMockPoints = () => (Array.from({length: POINTS_COUNT}, (value, index) => getRandomPoint(index)));
+
+export {getRandomPoint, offersByType, destinations, getMockPoints};

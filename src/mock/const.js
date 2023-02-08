@@ -16,9 +16,8 @@ const CITIES_NAMES = ['Chamonix', 'Amsterdam', 'Geneva', 'Paris', 'Berlin', 'Bar
 const OFFERS_TITLES = ['Upgrade to a business class', 'Order Uber', 'Add luggage', 'Switch to comfort', 'Rent a car', 'Add breakfast'];
 const POINTS_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export {
-  DESCRIPTIONS,
+export { DESCRIPTIONS,
   CITIES_NAMES,
   OFFERS_TITLES,
-  POINTS_TYPES,
+  POINTS_TYPES
 };

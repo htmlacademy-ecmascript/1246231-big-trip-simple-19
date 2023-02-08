@@ -17,12 +17,12 @@ const RenderPosition = {
  * @param {string} template - HTML-шаблон в виде строки.
  * @returns {Object} DOM-element.
  */
-const createElement = function (template) {
+function createElement(template) {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
 
   return newElement.firstElementChild;
-};
+}
 
 /**
  * Отрисовывает DOM-element на странице.
@@ -30,8 +30,8 @@ const createElement = function (template) {
  * @param {Object} container - DOM-element по отношение к которому отрисовывается компонент.
  * @param {string} place - определяет позицию добавляемого элемента относительно элемента.
  */
-const render = function (component, container, place = RenderPosition.BEFOREEND) {
-  container.insertAdjacentElement(place, component.getElement());
-};
+function render(component, container, place = RenderPosition.BEFOREEND) {
+  container.insertAdjacentElement(place, component.element);
+}
 
 export { RenderPosition, createElement, render };

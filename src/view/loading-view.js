@@ -3,19 +3,21 @@ import { createElement } from '../render.js';
 const createLoadingTemplate = () => '<p class="trip-events__msg">Loading...</p>';
 
 export default class LoadingView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createLoadingTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

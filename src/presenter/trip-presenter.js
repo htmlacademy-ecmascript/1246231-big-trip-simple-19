@@ -3,6 +3,7 @@ import SortingView from '../view/sorting-view.js';
 import WaypointView from '../view/waypoint-view.js';
 import EditingWaypointView from '../view/editing-waypoint-view.js';
 import AddingWaypointView from '../view/adding-waypoint-view.js';
+import EmptyListView from '../view/empty-list-view';
 import { render, RenderPosition } from '../render.js';
 import { isEscapeKey } from '../util.js';
 
@@ -25,6 +26,11 @@ export default class TripPresenter {
   }
 
   #renderPointsList() {
+    if (!this.#listPoints.length) {
+      render(new EmptyListView(), this.#pointsContainer);
+      return;
+    }
+
     render(new SortingView(), this.#pointsContainer);
     render(this.#pointListComponent, this.#pointsContainer);
     render(new AddingWaypointView(), this.#pointListComponent.element, RenderPosition.AFTERBEGIN);

@@ -1,10 +1,11 @@
-import { getRandomInteger, getRandomArrayElement } from './util.js';
+import { getRandomInteger, getRandomArrayElement } from './utils.js';
 import { DESCRIPTIONS, CITIES_NAMES} from './const.js';
 
 const DescriptionsCount = {
   MIN: 1,
   MAX: 5
 };
+
 const Pictures = {
   MIN_RANDOM: 1,
   MAX_RANDOM: 50,

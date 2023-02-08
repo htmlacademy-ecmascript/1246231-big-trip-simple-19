@@ -1,19 +1,26 @@
 import dayjs from 'dayjs';
-import { getRandomInteger } from './util';
+import { getRandomInteger } from './utils.js';
 
 const TimeDuration = {
   DAY: 'day',
   HOUR: 'hour',
   MINUTE: 'minute'
 };
+
 const TimeRanges = {
-  DAYS_MIN: 1,
+  DAYS_MIN: -1,
   DAYS_MAX: 3,
   HOURS_MIN: 1,
   HOURS_MAX: 23,
   MINUTES_MIN: 1,
   MINUTES_MAX: 59
 };
+
+const isStartDateExpired = (dateFrom) => dayjs(dateFrom).isAfter(dayjs());
+
+const isEndDateExpired = (dateTo) => dayjs(dateTo).isAfter(dayjs());
+
+const isFutureEvent = (dateFrom, dateTo) => isStartDateExpired(dateFrom) && isEndDateExpired(dateTo);
 
 const getRandomDate = () =>
   dayjs().add(getRandomInteger(TimeRanges.DAYS_MIN, TimeRanges.DAYS_MAX), TimeDuration.DAY)
@@ -36,4 +43,4 @@ const getRandomDates = () => {
   };
 };
 
-export { getRandomDates };
+export { getRandomDates, isFutureEvent};

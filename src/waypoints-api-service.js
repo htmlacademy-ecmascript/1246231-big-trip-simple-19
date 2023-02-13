@@ -9,7 +9,7 @@ const Method = {
 
 export default class WaypointsApiService extends ApiService {
 
-  get points() {
+  get waypoints() {
     return this._load({ url: 'points' })
       .then(ApiService.parseResponse);
   }
@@ -24,7 +24,7 @@ export default class WaypointsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  async updatePoint(point) {
+  async updateWaypoint(point) {
     const response = await this._load({
       url: `points/${point.id}`,
       method: Method.PUT,
@@ -37,11 +37,11 @@ export default class WaypointsApiService extends ApiService {
     return parsedResponse;
   }
 
-  async addPoint(point) {
+  async addWaypoint(waypoint) {
     const response = await this._load({
       url: 'points',
       method: Method.POST,
-      body: JSON.stringify(this.#adaptToServer(point)),
+      body: JSON.stringify(this.#adaptToServer(waypoint)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
@@ -50,9 +50,9 @@ export default class WaypointsApiService extends ApiService {
 
   }
 
-  async deletePoint(point) {
+  async deleteWayoint(waypoint) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `points/${waypoint.id}`,
       method: Method.DELETE,
     });
 

@@ -105,7 +105,7 @@ export default class TripPresenter {
       case UserAction.UPDATE_POINT:
         this.#pointPresenter.get(update.id).setSaving();
         try {
-          await this.#waypointsModel.updatePoint(updateType, update);
+          await this.#waypointsModel.updateWaypoint(updateType, update);
         } catch (err) {
           this.#pointPresenter.get(update.id).setAborting();
         }
@@ -114,7 +114,7 @@ export default class TripPresenter {
       case UserAction.ADD_WAYPOINT:
         this.#newWaypointPresenter.setSaving();
         try {
-          await this.#waypointsModel.addPoint(updateType, update);
+          await this.#waypointsModel.addWaypoint(updateType, update);
         } catch (err) {
           this.#newWaypointPresenter.setAborting();
         }
@@ -123,7 +123,7 @@ export default class TripPresenter {
       case UserAction.DELETE_POINT:
         this.#pointPresenter.get(update.id).setDeleting();
         try {
-          await this.#waypointsModel.deletePoint(updateType, update);
+          await this.#waypointsModel.deleteWayoint(updateType, update);
         } catch (err) {
           this.#pointPresenter.get(update.id).setAborting();
         }

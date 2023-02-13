@@ -34,7 +34,7 @@ export default class WaypointsModel extends Observable {
 
   init = async () => {
     try {
-      const waypoints = await this.#waypointsApiService.points;
+      const waypoints = await this.#waypointsApiService.waypoints;
       const offers = await this.#waypointsApiService.offers;
       const destinations = await this.#waypointsApiService.destinations;
 
@@ -49,48 +49,48 @@ export default class WaypointsModel extends Observable {
     this._notify(UpdateType.INIT);
   };
 
-  async updatePoint(updateType, update) {
-    const index = this.#waypoints.findIndex((point) => point.id === update.id);
+  async updateWaypoint(updateType, update) {
+    const index = this.#waypoints.findIndex((waypoints) => waypoints.id === update.id);
 
     if (index === -1) {
       throw new Error(`Can't delete unexisting point: ${update}`);
     }
 
     try {
-      const response = await this.#waypointsApiService.updatePoint(update);
-      const updatedPoint = this.#adaptToClient(response);
+      const response = await this.#waypointsApiService.updateWaypoint(update);
+      const updatedWaypoint = this.#adaptToClient(response);
 
       this.#waypoints = [
         ...this.#waypoints.slice(0, index),
-        updatedPoint,
+        updatedWaypoint,
         ...this.#waypoints.slice(index + 1),
       ];
-      this._notify(updateType, updatedPoint);
+      this._notify(updateType, updatedWaypoint);
     } catch (err) {
       throw new Error(`Can't update point: ${update}. Error: ${err}`);
     }
   }
 
-  async addPoint(updateType, update) {
+  async addWaypoint(updateType, update) {
     try {
-      const response = await this.#waypointsApiService.addPoint(update);
-      const newPoint = this.#adaptToClient(response);
-      this.#waypoints = [newPoint, ...this.#waypoints];
-      this._notify(updateType, newPoint);
+      const response = await this.#waypointsApiService.addWaypoint(update);
+      const newWaypoint = this.#adaptToClient(response);
+      this.#waypoints = [newWaypoint, ...this.#waypoints];
+      this._notify(updateType, newWaypoint);
     } catch (err) {
       throw new Error(`Can't add point ${update}. Error: ${err}`);
     }
   }
 
-  async deletePoint(updateType, update) {
-    const index = this.#waypoints.findIndex((point) => point.id === update.id);
+  async deleteWayoint(updateType, update) {
+    const index = this.#waypoints.findIndex((waypoints) => waypoints.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting point');
     }
 
     try {
-      await this.#waypointsApiService.deletePoint(update);
+      await this.#waypointsApiService.deleteWayoint(update);
       this.#waypoints = [
         ...this.#waypoints.slice(0, index),
         ...this.#waypoints.slice(index + 1),
@@ -101,18 +101,18 @@ export default class WaypointsModel extends Observable {
     }
   }
 
-  #adaptToClient(point) {
-    const adaptedPoint = {
-      ...point,
-      basePrice: point['base_price'],
-      dateFrom: new Date(point['date_from']),
-      dateTo: new Date(point['date_to'])
+  #adaptToClient(waypoints) {
+    const adaptedWaypoints = {
+      ...waypoints,
+      basePrice: waypoints['base_price'],
+      dateFrom: new Date(waypoints['date_from']),
+      dateTo: new Date(waypoints['date_to'])
     };
 
-    delete adaptedPoint['base_price'];
-    delete adaptedPoint['date_from'];
-    delete adaptedPoint['date_to'];
+    delete adaptedWaypoints['base_price'];
+    delete adaptedWaypoints['date_from'];
+    delete adaptedWaypoints['date_to'];
 
-    return adaptedPoint;
+    return adaptedWaypoints;
   }
 }

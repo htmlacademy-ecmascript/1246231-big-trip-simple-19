@@ -1,12 +1,36 @@
 import { SortType } from '../const.js';
 import dayjs from 'dayjs';
 
-const generateSortOptions = {
-  [SortType.DAY]: (points) => points.sort((pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom))),
-  [SortType.EVENT]: (points) => points,
-  [SortType.TIME]: (points) => points,
-  [SortType.PRICE]: (points) => points.sort((pointA, pointB) => pointB.basePrice - pointA.basePrice),
-  [SortType.OFFERS]: (points) => points,
+const options = {
+  [SortType.DAY]: () => false,
+  [SortType.EVENT]: () => true,
+  [SortType.TIME]: () => true,
+  [SortType.PRICE]: () => false,
+  [SortType.OFFERS]: () => true,
 };
 
-export { generateSortOptions };
+const getSortedWaypoints = (waypoints, sortType) => {
+  switch (sortType) {
+    case SortType.DAY:
+      return waypoints.sort((waypointA, waypointB) => dayjs(waypointA.dateFrom).diff(dayjs(waypointB.dateFrom)));
+    case SortType.PRICE:
+      return waypoints.sort((waypointA, waypointB) => waypointB.basePrice - waypointA.basePrice);
+    default:
+      return waypoints;
+  }
+};
+
+const isPriceEqual = (priceA, priceB) => (priceA === null && priceB === null) || (priceA === priceB);
+
+const getSort = () =>
+  Object.entries(options).map(([optionName, isDisabledOption]) => ({
+    name: optionName,
+    disabled: isDisabledOption(optionName),
+  }));
+
+export {
+  options,
+  getSortedWaypoints,
+  isPriceEqual,
+  getSort
+};

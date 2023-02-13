@@ -7,7 +7,7 @@ export default class NewWaypointPresenter {
   #waypointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
-  #pointEditComponent = null;
+  #waypointEditComponent = null;
   #allCities = null;
   #point = null;
   #allDestinations = [];
@@ -25,11 +25,11 @@ export default class NewWaypointPresenter {
     this.#allOffers = allOffers;
     this.#allCities = allCities;
 
-    if (this.#pointEditComponent !== null) {
+    if (this.#waypointEditComponent !== null) {
       return;
     }
 
-    this.#pointEditComponent = new EditWaypointView({
+    this.#waypointEditComponent = new EditWaypointView({
       point: this.#point,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
@@ -40,26 +40,26 @@ export default class NewWaypointPresenter {
       isNewPoint: true
     });
 
-    render(this.#pointEditComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);
+    render(this.#waypointEditComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
   destroy() {
-    if (this.#pointEditComponent === null) {
+    if (this.#waypointEditComponent === null) {
       return;
     }
 
     this.#handleDestroy();
 
-    remove(this.#pointEditComponent);
-    this.#pointEditComponent = null;
+    remove(this.#waypointEditComponent);
+    this.#waypointEditComponent = null;
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
   setSaving() {
-    this.#pointEditComponent.updateElement({
+    this.#waypointEditComponent.updateElement({
       isDisabled: true,
       isSaving: true
     });
@@ -67,14 +67,14 @@ export default class NewWaypointPresenter {
 
   setAborting() {
     const resetFormState = () => {
-      this.#pointEditComponent.updateElement({
+      this.#waypointEditComponent.updateElement({
         isDisabled: false,
         isSaving: false,
         isDeleting: false,
       });
     };
 
-    this.#pointEditComponent.shake(resetFormState);
+    this.#waypointEditComponent.shake(resetFormState);
   }
 
   #handleFormSubmit = (point) => {
@@ -86,9 +86,8 @@ export default class NewWaypointPresenter {
   };
 
   #handleFormCloseClick = () => {
-    this.#pointEditComponent.reset(this.#point);
+    this.#waypointEditComponent.reset(this.#point);
   };
-
 
   #handleDeleteClick = () => {
     this.destroy();

@@ -1,10 +1,10 @@
 import { remove, render, RenderPosition } from '../framework/render.js';
-import EditPointView from '../view/edit-waypoint-view.js';
+import EditWaypointView from '../view/edit-waypoint-view.js';
 import { UserAction, UpdateType } from '../const.js';
 import { isEscapeKey } from '../util.js';
 
-export default class NewPointPresenter {
-  #pointListContainer = null;
+export default class NewWaypointPresenter {
+  #waypointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
   #pointEditComponent = null;
@@ -13,8 +13,8 @@ export default class NewPointPresenter {
   #allDestinations = [];
   #allOffers = [];
 
-  constructor({ pointListContainer, onDataChange, onDestroy }) {
-    this.#pointListContainer = pointListContainer;
+  constructor({ waypointListContainer, onDataChange, onDestroy }) {
+    this.#waypointListContainer = waypointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
@@ -29,7 +29,7 @@ export default class NewPointPresenter {
       return;
     }
 
-    this.#pointEditComponent = new EditPointView({
+    this.#pointEditComponent = new EditWaypointView({
       point: this.#point,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
@@ -40,7 +40,7 @@ export default class NewPointPresenter {
       isNewPoint: true
     });
 
-    render(this.#pointEditComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
+    render(this.#pointEditComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }

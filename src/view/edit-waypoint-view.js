@@ -213,7 +213,7 @@ const createEditPointTemplate = (point, destinations, offersByType, isNewPoint) 
   );
 };
 
-export default class EditPointView extends AbstractStatefulView {
+export default class EditWaypointView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleRollupBtnClick = null;
   #allDestinations = null;
@@ -226,7 +226,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   constructor({ point, allDestinations, allOffers, allCities, onFormSubmit, onRollupBtnClick, onDeleteClick, isNewPoint = false }) {
     super();
-    this._setState(EditPointView.parsePointToState(point));
+    this._setState(EditWaypointView.parsePointToState(point));
     this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this.#allCities = allCities;
@@ -264,7 +264,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+    this.#handleFormSubmit(EditWaypointView.parseStateToPoint(this._state));
   };
 
   #rollupButtonClickHandler = (evt) => {
@@ -330,7 +330,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   reset = (point) => {
     this.updateElement(
-      EditPointView.parsePointToState(point)
+      EditWaypointView.parsePointToState(point)
     );
   };
 
@@ -393,7 +393,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditPointView.parseStateToPoint(this._state));
+    this.#handleDeleteClick(EditWaypointView.parseStateToPoint(this._state));
   };
 
   static parsePointToState = (point) => ({

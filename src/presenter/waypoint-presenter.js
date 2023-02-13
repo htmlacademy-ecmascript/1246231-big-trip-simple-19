@@ -1,5 +1,5 @@
 import PointView from '../view/waypoint-view.js';
-import EditPointView from '../view/edit-waypoint-view.js';
+import EditWaypointView from '../view/edit-waypoint-view.js';
 import { render, replace, remove } from '../framework/render.js';
 import { isEscapeKey } from '../util.js';
 import { UserAction, UpdateType } from '../const.js';
@@ -44,7 +44,7 @@ export default class PointPresenter {
       onRollupBtnClick: this.#handleEditClick
     });
 
-    this.#pointEditComponent = new EditPointView({
+    this.#pointEditComponent = new EditWaypointView({
       point: this.#point,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,

@@ -1,6 +1,6 @@
 import PointListView from '../view/points-view.js';
 import NoPointsView from '../view/no-points-view.js';
-import NewPointPresenter from './new-waypoint-presenter.js';
+import NewWaypointPresenter from './new-waypoint-presenter.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import PointPresenter from './waypoint-presenter.js';
 import ListSortView from '../view/sort-view.js';
@@ -22,7 +22,7 @@ export default class TripPresenter {
   #pointsContainer = null;
   #waypointsModel = null;
   #filterModel = null;
-  #newPointPresenter = null;
+  #newWaypointPresenter = null;
   #sortComponent = null;
   #sortOptions = getSort();
   #currentSortType = SortType.DAY;
@@ -47,8 +47,8 @@ export default class TripPresenter {
     this.#headerContainer = headerFiltersElement;
     this.#newPointButtonContainer = newPointButtonContainer;
 
-    this.#newPointPresenter = new NewPointPresenter({
-      pointListContainer: this.#pointListComponent.element,
+    this.#newWaypointPresenter = new NewWaypointPresenter({
+      waypointListContainer: this.#pointListComponent.element,
       onDataChange: this.#handleViewAction,
       onDestroy: this.#handleNewPointFormClose
     });
@@ -67,7 +67,7 @@ export default class TripPresenter {
     const point = defaultNewPoint;
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newPointPresenter.init(point, this.destinations, this.offers, this.cities);
+    this.#newWaypointPresenter.init(point, this.destinations, this.offers, this.cities);
   }
 
   get points() {
@@ -112,11 +112,11 @@ export default class TripPresenter {
         break;
 
       case UserAction.ADD_POINT:
-        this.#newPointPresenter.setSaving();
+        this.#newWaypointPresenter.setSaving();
         try {
           await this.#waypointsModel.addPoint(updateType, update);
         } catch (err) {
-          this.#newPointPresenter.setAborting();
+          this.#newWaypointPresenter.setAborting();
         }
         break;
 
@@ -206,7 +206,7 @@ export default class TripPresenter {
   };
 
   #handleModeChange = () => {
-    this.#newPointPresenter.destroy();
+    this.#newWaypointPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
@@ -215,7 +215,7 @@ export default class TripPresenter {
 
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
-    this.#newPointPresenter.destroy();
+    this.#newWaypointPresenter.destroy();
 
 
     remove(this.#sortComponent);

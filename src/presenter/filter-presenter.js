@@ -19,18 +19,18 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    const points = this.#waypointsModel.points;
+    const waypoints = this.#waypointsModel.waypoints;
 
     return [
       {
         type: FilterType.EVERYTHING,
         name: 'everything',
-        count: filter[FilterType.EVERYTHING](points).length,
+        count: filter[FilterType.EVERYTHING](waypoints).length,
       },
       {
         type: FilterType.FUTURE,
         name: 'future',
-        count: filter[FilterType.FUTURE](points).length,
+        count: filter[FilterType.FUTURE](waypoints).length,
       }
     ];
   }

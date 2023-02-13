@@ -72,8 +72,8 @@ export default class TripPresenter {
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    const points = [...this.#waypointsModel.points];
-    const filteredPoints = filter[this.#filterType](points);
+    const waypoints = [...this.#waypointsModel.waypoints];
+    const filteredPoints = filter[this.#filterType](waypoints);
 
     switch (this.#currentSortType) {
       case SortType.DAY:

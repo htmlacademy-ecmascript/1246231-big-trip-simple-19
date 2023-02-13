@@ -15,7 +15,7 @@ export default class WaypointsModel extends Observable {
 
   }
 
-  get points() {
+  get waypoints() {
     return getSortedWaypoints(this.#waypoints, SortType.DAY);
   }
 

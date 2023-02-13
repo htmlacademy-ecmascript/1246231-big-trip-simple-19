@@ -5,7 +5,7 @@ import FilterPresenter from './presenter/filter-presenter.js';
 import PointsApiService from './points-api-service.js';
 import { randomString } from './util.js';
 
-const AUTHORIZATION = `Basic ${randomString(12)}`;
+const AUTHORIZATION = `Basic empty`;
 const END_POINT = 'https://19.ecmascript.pages.academy/big-trip-simple';
 
 const headerContainer = document.querySelector('.trip-main');

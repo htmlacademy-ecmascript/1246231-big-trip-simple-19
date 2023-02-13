@@ -1,5 +1,5 @@
 import TripPresenter from './presenter/trip-presenter.js';
-import PointsModel from './model/points-model.js';
+import WaypointsModel from './model/waypoints-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsApiService from './points-api-service.js';
@@ -13,7 +13,7 @@ const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const mainEventsElement = document.querySelector('.trip-events');
 
 
-const pointsModel = new PointsModel({
+const waypointsModel = new WaypointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
 
@@ -22,12 +22,12 @@ const filterModel = new FilterModel();
 const filterPresenter = new FilterPresenter({
   filterContainer: headerFiltersElement,
   filterModel,
-  pointsModel
+  waypointsModel
 });
 
 const tripPresenter = new TripPresenter({
   pointsContainer: mainEventsElement,
-  pointsModel,
+  waypointsModel,
   filterModel,
   headerFiltersElement,
   newPointButtonContainer: headerContainer,
@@ -35,4 +35,4 @@ const tripPresenter = new TripPresenter({
 
 filterPresenter.init();
 tripPresenter.init();
-pointsModel.init();
+waypointsModel.init();

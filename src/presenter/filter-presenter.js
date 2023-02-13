@@ -6,20 +6,20 @@ import { FilterType, UpdateType } from '../const';
 export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
-  #pointsModel = null;
+  #waypointsModel = null;
   #filterComponent = null;
 
-  constructor({ filterContainer, filterModel, pointsModel }) {
+  constructor({ filterContainer, filterModel, waypointsModel }) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
-    this.#pointsModel = pointsModel;
+    this.#waypointsModel = waypointsModel;
 
-    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#waypointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
-    const points = this.#pointsModel.points;
+    const points = this.#waypointsModel.points;
 
     return [
       {

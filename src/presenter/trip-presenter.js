@@ -20,7 +20,7 @@ export default class TripPresenter {
   #loadingComponent = new LoadingView();
   #listPoints = [];
   #pointsContainer = null;
-  #pointsModel = null;
+  #waypointsModel = null;
   #filterModel = null;
   #newPointPresenter = null;
   #sortComponent = null;
@@ -40,9 +40,9 @@ export default class TripPresenter {
   });
 
 
-  constructor({ pointsContainer, pointsModel, filterModel, headerFiltersElement, newPointButtonContainer }) {
+  constructor({ pointsContainer, waypointsModel, filterModel, headerFiltersElement, newPointButtonContainer }) {
     this.#pointsContainer = pointsContainer;
-    this.#pointsModel = pointsModel;
+    this.#waypointsModel = waypointsModel;
     this.#filterModel = filterModel;
     this.#headerContainer = headerFiltersElement;
     this.#newPointButtonContainer = newPointButtonContainer;
@@ -54,7 +54,7 @@ export default class TripPresenter {
     });
 
 
-    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#waypointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
@@ -72,7 +72,7 @@ export default class TripPresenter {
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    const points = [...this.#pointsModel.points];
+    const points = [...this.#waypointsModel.points];
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
@@ -86,15 +86,15 @@ export default class TripPresenter {
   }
 
   get offers() {
-    return [...this.#pointsModel.offers];
+    return [...this.#waypointsModel.offers];
   }
 
   get destinations() {
-    return [...this.#pointsModel.destinations];
+    return [...this.#waypointsModel.destinations];
   }
 
   get cities() {
-    return [...this.#pointsModel.cities];
+    return [...this.#waypointsModel.cities];
   }
 
 
@@ -105,7 +105,7 @@ export default class TripPresenter {
       case UserAction.UPDATE_POINT:
         this.#pointPresenter.get(update.id).setSaving();
         try {
-          await this.#pointsModel.updatePoint(updateType, update);
+          await this.#waypointsModel.updatePoint(updateType, update);
         } catch (err) {
           this.#pointPresenter.get(update.id).setAborting();
         }
@@ -114,7 +114,7 @@ export default class TripPresenter {
       case UserAction.ADD_POINT:
         this.#newPointPresenter.setSaving();
         try {
-          await this.#pointsModel.addPoint(updateType, update);
+          await this.#waypointsModel.addPoint(updateType, update);
         } catch (err) {
           this.#newPointPresenter.setAborting();
         }
@@ -123,7 +123,7 @@ export default class TripPresenter {
       case UserAction.DELETE_POINT:
         this.#pointPresenter.get(update.id).setDeleting();
         try {
-          await this.#pointsModel.deletePoint(updateType, update);
+          await this.#waypointsModel.deletePoint(updateType, update);
         } catch (err) {
           this.#pointPresenter.get(update.id).setAborting();
         }

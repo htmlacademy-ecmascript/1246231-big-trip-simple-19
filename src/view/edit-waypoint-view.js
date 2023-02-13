@@ -224,9 +224,9 @@ export default class EditWaypointView extends AbstractStatefulView {
   #isNewPoint = null;
   #allCities = null;
 
-  constructor({ point, allDestinations, allOffers, allCities, onFormSubmit, onRollupBtnClick, onDeleteClick, isNewPoint = false }) {
+  constructor({ waypoint, allDestinations, allOffers, allCities, onFormSubmit, onRollupBtnClick, onDeleteClick, isNewPoint = false }) {
     super();
-    this._setState(EditWaypointView.parsePointToState(point));
+    this._setState(EditWaypointView.parsePointToState(waypoint));
     this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this.#allCities = allCities;

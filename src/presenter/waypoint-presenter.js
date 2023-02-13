@@ -19,7 +19,7 @@ export default class PointPresenter {
   #handleModeChange = null;
   #allDestinations = null;
   #allOffers = null;
-  #point = null;
+  #waypoint = null;
   #mode = Mode.DEFAULT;
   #allCities = null;
 
@@ -32,20 +32,20 @@ export default class PointPresenter {
     this.#handleModeChange = onModeChange;
   }
 
-  init(point) {
-    this.#point = point;
+  init(waypoint) {
+    this.#waypoint = waypoint;
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent = new PointView({
-      point: this.#point,
+      waypoint: this.#waypoint,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
       onRollupBtnClick: this.#handleEditClick
     });
 
     this.#pointEditComponent = new EditWaypointView({
-      point: this.#point,
+      waypoint: this.#waypoint,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
       allCities: this.#allCities,
@@ -116,7 +116,7 @@ export default class PointPresenter {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
-      this.#pointEditComponent.reset(this.#point);
+      this.#pointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
     }
   }
@@ -138,7 +138,7 @@ export default class PointPresenter {
   #escKeydownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      this.#pointEditComponent.reset(this.#point);
+      this.#pointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
     }
   };
@@ -152,9 +152,9 @@ export default class PointPresenter {
     // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление.
     //к ним относятстя изменение дат и цены
     const isMinorUpdate =
-      !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
-      !isDatesEqual(this.#point.dateTo, update.dateTo) ||
-      !isPriceEqual(this.#point.basePrice, update.basePrice);
+      !isDatesEqual(this.#waypoint.dateFrom, update.dateFrom) ||
+      !isDatesEqual(this.#waypoint.dateTo, update.dateTo) ||
+      !isPriceEqual(this.#waypoint.basePrice, update.basePrice);
 
 
     this.#handleDataChange(
@@ -166,15 +166,15 @@ export default class PointPresenter {
 
 
   #handleRollupBtnClick = () => {
-    this.#pointEditComponent.reset(this.#point);
+    this.#pointEditComponent.reset(this.#waypoint);
     this.#replaceEditFormToPoint();
   };
 
-  #handleDeleteClick = (point) => {
+  #handleDeleteClick = (waypoint) => {
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
-      point,
+      waypoint,
     );
   };
 }

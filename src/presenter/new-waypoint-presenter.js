@@ -9,7 +9,7 @@ export default class NewWaypointPresenter {
   #handleDestroy = null;
   #waypointEditComponent = null;
   #allCities = null;
-  #point = null;
+  #waypoint = null;
   #allDestinations = [];
   #allOffers = [];
 
@@ -19,8 +19,8 @@ export default class NewWaypointPresenter {
     this.#handleDestroy = onDestroy;
   }
 
-  init(point, allDestinations, allOffers, allCities) {
-    this.#point = point;
+  init(waypoint, allDestinations, allOffers, allCities) {
+    this.#waypoint = waypoint;
     this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this.#allCities = allCities;
@@ -30,7 +30,7 @@ export default class NewWaypointPresenter {
     }
 
     this.#waypointEditComponent = new EditWaypointView({
-      point: this.#point,
+      waypoint: this.#waypoint,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
       allCities: this.#allCities,
@@ -77,16 +77,16 @@ export default class NewWaypointPresenter {
     this.#waypointEditComponent.shake(resetFormState);
   }
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = (waypoint) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      point
+      waypoint
     );
   };
 
   #handleFormCloseClick = () => {
-    this.#waypointEditComponent.reset(this.#point);
+    this.#waypointEditComponent.reset(this.#waypoint);
   };
 
   #handleDeleteClick = () => {

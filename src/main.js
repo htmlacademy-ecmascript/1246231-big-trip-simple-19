@@ -1,29 +1,38 @@
-import { render } from './render.js';
-import FiltersView from './view/filters-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
-import ListSortingView from './view/sorting-view.js';
-import { generateFilter } from './mock/filter.js';
-import { generateSort } from './mock/sort.js';
-import { getMockPoints } from './mock/point.js';
+import FilterModel from './model/filter-model.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import PointsApiService from './points-api-service.js';
+import { randomString } from './util.js';
 
-const mockPoints = getMockPoints();
+const AUTHORIZATION = `Basic ${randomString(12)}`;
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip-simple';
+
+const headerContainer = document.querySelector('.trip-main');
 const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const mainEventsElement = document.querySelector('.trip-events');
 
-const pointsModel = new PointsModel(mockPoints);
-const tripPresenter = new TripPresenter({
-  pointsContainer: mainEventsElement,
+
+const pointsModel = new PointsModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
+
+const filterModel = new FilterModel();
+
+const filterPresenter = new FilterPresenter({
+  filterContainer: headerFiltersElement,
+  filterModel,
   pointsModel
 });
 
-const points = pointsModel.points;
+const tripPresenter = new TripPresenter({
+  pointsContainer: mainEventsElement,
+  pointsModel,
+  filterModel,
+  headerFiltersElement,
+  newPointButtonContainer: headerContainer,
+});
 
-const filters = generateFilter(points);
-
-render(new FiltersView({filters}), headerFiltersElement);
-
-const sortedPoints = generateSort(points);
-render(new ListSortingView(sortedPoints), mainEventsElement);
-
+filterPresenter.init();
 tripPresenter.init();
+pointsModel.init();

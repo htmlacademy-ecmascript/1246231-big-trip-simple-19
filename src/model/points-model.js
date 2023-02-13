@@ -1,4 +1,4 @@
-import { getSortedPoints } from '../utils/sort.js';
+import { getSortedWaypoints } from '../utils/sort.js';
 import { SortType } from '../const.js';
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../const.js';
@@ -16,9 +16,8 @@ export default class PointsModel extends Observable {
   }
 
   get points() {
-    return getSortedPoints(this.#points, SortType.DAY);
+    return getSortedWaypoints(this.#points, SortType.DAY);
   }
-
 
   get destinations() {
     return this.#destinations;
@@ -33,7 +32,6 @@ export default class PointsModel extends Observable {
     this.#destinations.forEach((destination) => cities.push(destination.name));
     return cities;
   }
-
 
   init = async () => {
     try {

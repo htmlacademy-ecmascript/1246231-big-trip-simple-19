@@ -6,7 +6,7 @@ import PointPresenter from './waypoint-presenter.js';
 import ListSortView from '../view/sort-view.js';
 import { getSort } from '../utils/sort.js';
 import { SortType, defaultNewPoint } from '../const.js';
-import { getSortedPoints } from '../utils/sort.js';
+import { getSortedWaypoints } from '../utils/sort.js';
 import { UpdateType, UserAction, FilterType, TimeLimit } from '../const.js';
 import { filter } from '../utils/filter.js';
 import LoadingView from '../view/loading-view.js';
@@ -77,9 +77,9 @@ export default class TripPresenter {
 
     switch (this.#currentSortType) {
       case SortType.DAY:
-        return getSortedPoints(filteredPoints, SortType.DAY);
+        return getSortedWaypoints(filteredPoints, SortType.DAY);
       case SortType.PRICE:
-        return getSortedPoints(filteredPoints, SortType.PRICE);
+        return getSortedWaypoints(filteredPoints, SortType.PRICE);
     }
 
     return filteredPoints;

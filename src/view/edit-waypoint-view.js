@@ -5,7 +5,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { MIN_FLATPICKER_DATE } from '../const.js';
 import he from 'he';
 
-const createEditPointTemplate = (point, destinations, offersByType, isNewPoint) => {
+const createEditPointTemplate = (point, destinations, offersByType, isNewWaypoint) => {
   const { type, offers, destination, basePrice, dateFrom, dateTo, id, isDisabled, isSaving, isDeleting } = point;
   const isValidForm = destination && basePrice;
   const saveBtnText = isSaving ? 'Saving...' : 'Save';
@@ -107,7 +107,7 @@ const createEditPointTemplate = (point, destinations, offersByType, isNewPoint) 
         <span class="visually-hidden">Open event</span>
       </button>`
     );
-    if (isNewPoint) {
+    if (isNewWaypoint) {
       template = '<button class="event__reset-btn" type="reset">Cancel</button>';
     }
     return template;
@@ -221,10 +221,10 @@ export default class EditWaypointView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
   #handleDeleteClick = null;
-  #isNewPoint = null;
+  #isNewWaypoint = null;
   #allCities = null;
 
-  constructor({ waypoint, allDestinations, allOffers, allCities, onFormSubmit, onRollupBtnClick, onDeleteClick, isNewPoint = false }) {
+  constructor({ waypoint, allDestinations, allOffers, allCities, onFormSubmit, onRollupBtnClick, onDeleteClick, isNewWaypoint = false }) {
     super();
     this._setState(EditWaypointView.parsePointToState(waypoint));
     this.#allDestinations = allDestinations;
@@ -233,13 +233,13 @@ export default class EditWaypointView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollupBtnClick = onRollupBtnClick;
     this.#handleDeleteClick = onDeleteClick;
-    this.#isNewPoint = isNewPoint;
+    this.#isNewWaypoint = isNewWaypoint;
 
     this._restoreHandlers();
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#allDestinations, this.#allOffers, this.#isNewPoint);
+    return createEditPointTemplate(this._state, this.#allDestinations, this.#allOffers, this.#isNewWaypoint);
   }
 
   _restoreHandlers() {

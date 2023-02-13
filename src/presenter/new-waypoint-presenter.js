@@ -37,7 +37,7 @@ export default class NewWaypointPresenter {
       onFormSubmit: this.#handleFormSubmit,
       onRollupBtnClick: this.#handleFormCloseClick,
       onDeleteClick: this.#handleDeleteClick,
-      isNewPoint: true
+      isNewWaypoint: true
     });
 
     render(this.#waypointEditComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);

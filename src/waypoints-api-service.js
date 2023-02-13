@@ -8,7 +8,6 @@ const Method = {
 };
 
 export default class WaypointsApiService extends ApiService {
-
   get waypoints() {
     return this._load({ url: 'points' })
       .then(ApiService.parseResponse);
@@ -24,11 +23,11 @@ export default class WaypointsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  async updateWaypoint(point) {
+  async updateWaypoint(waypoint) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `points/${waypoint.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(point)),
+      body: JSON.stringify(this.#adaptToServer(waypoint)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
@@ -59,16 +58,14 @@ export default class WaypointsApiService extends ApiService {
     return response;
   }
 
-
-  #adaptToServer = (point) => {
+  #adaptToServer = (waypoint) => {
     const adaptedPoint = {
-      ...point,
-      'base_price': point.basePrice,
-      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
-      'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null
+      ...waypoint,
+      'base_price': waypoint.basePrice,
+      'date_from': waypoint.dateFrom instanceof Date ? waypoint.dateFrom.toISOString() : null,
+      'date_to': waypoint.dateTo instanceof Date ? waypoint.dateTo.toISOString() : null
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedPoint.basePrice;
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;

@@ -14,9 +14,9 @@ const SortType = {
 };
 
 const UserAction = {
-  UPDATE_POINT: 'UPDATE_POINT',
+  UPDATE_WAYPOINT: 'UPDATE_WAYPOINT',
   ADD_WAYPOINT: 'ADD_WAYPOINT',
-  DELETE_POINT: 'DELETE_POINT',
+  DELETE_WAYPOINT: 'DELETE_WAYPOINT',
 };
 
 const UpdateType = {
@@ -29,7 +29,7 @@ const UpdateType = {
 const DEFAULT_START_DATE = dayjs().toDate();
 const DEFAULT_END_DATE = dayjs().add((1), 'day').toDate();
 
-const defaultNewPoint = {
+const defaultNewWaypoint = {
   basePrice: '',
   dateFrom: DEFAULT_START_DATE,
   dateTo: DEFAULT_END_DATE,
@@ -56,9 +56,8 @@ export {
   SortType,
   UserAction,
   UpdateType,
-  defaultNewPoint,
+  defaultNewWaypoint,
   TimeLimit,
   FormType,
   MIN_FLATPICKER_DATE
 };
-

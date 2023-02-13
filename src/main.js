@@ -3,15 +3,14 @@ import WaypointsModel from './model/waypoints-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import WaypointsApiService from './waypoints-api-service.js';
-// import { randomString } from './util.js';
+import { randomString } from './util.js';
 
-const AUTHORIZATION = 'Basic empt';
+const AUTHORIZATION = `Basic ${randomString(12)}`;
 const END_POINT = 'https://19.ecmascript.pages.academy/big-trip-simple';
 
 const headerContainer = document.querySelector('.trip-main');
 const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const mainEventsElement = document.querySelector('.trip-events');
-
 
 const waypointsModel = new WaypointsModel({
   waypointsApiService: new WaypointsApiService(END_POINT, AUTHORIZATION)
@@ -26,11 +25,11 @@ const filterPresenter = new FilterPresenter({
 });
 
 const tripPresenter = new TripPresenter({
-  pointsContainer: mainEventsElement,
+  waypointsContainer: mainEventsElement,
   waypointsModel,
   filterModel,
   headerFiltersElement,
-  newPointButtonContainer: headerContainer,
+  newWaypointButtonContainer: headerContainer,
 });
 
 filterPresenter.init();

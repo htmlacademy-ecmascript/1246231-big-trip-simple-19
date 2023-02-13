@@ -1,4 +1,4 @@
-import PointView from '../view/waypoint-view.js';
+import WaypointView from '../view/waypoint-view.js';
 import EditWaypointView from '../view/edit-waypoint-view.js';
 import { render, replace, remove } from '../framework/render.js';
 import { isEscapeKey } from '../util.js';
@@ -11,10 +11,10 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-export default class PointPresenter {
-  #pointsContainer = null;
-  #pointComponent = null;
-  #pointEditComponent = null;
+export default class WaypointPresenter {
+  #waypointsContainer = null;
+  #waypointComponent = null;
+  #waypointEditComponent = null;
   #handleDataChange = null;
   #handleModeChange = null;
   #allDestinations = null;
@@ -23,8 +23,8 @@ export default class PointPresenter {
   #mode = Mode.DEFAULT;
   #allCities = null;
 
-  constructor({ pointsContainer, allDestinations, allOffers, allCities, onDataChange, onModeChange }) {
-    this.#pointsContainer = pointsContainer;
+  constructor({ waypointsContainer, allDestinations, allOffers, allCities, onDataChange, onModeChange }) {
+    this.#waypointsContainer = waypointsContainer;
     this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this.#allCities = allCities;
@@ -34,17 +34,17 @@ export default class PointPresenter {
 
   init(waypoint) {
     this.#waypoint = waypoint;
-    const prevPointComponent = this.#pointComponent;
-    const prevPointEditComponent = this.#pointEditComponent;
+    const prevPointComponent = this.#waypointComponent;
+    const prevPointEditComponent = this.#waypointEditComponent;
 
-    this.#pointComponent = new PointView({
+    this.#waypointComponent = new WaypointView({
       waypoint: this.#waypoint,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
       onRollupBtnClick: this.#handleEditClick
     });
 
-    this.#pointEditComponent = new EditWaypointView({
+    this.#waypointEditComponent = new EditWaypointView({
       waypoint: this.#waypoint,
       allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
@@ -55,33 +55,31 @@ export default class PointPresenter {
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
-      render(this.#pointComponent, this.#pointsContainer);
+      render(this.#waypointComponent, this.#waypointsContainer);
       return;
     }
 
-
     if (this.#mode === Mode.DEFAULT) {
-      replace(this.#pointComponent, prevPointComponent);
+      replace(this.#waypointComponent, prevPointComponent);
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointComponent, prevPointEditComponent);
+      replace(this.#waypointComponent, prevPointEditComponent);
       this.#mode = Mode.DEFAULT;
     }
-
 
     remove(prevPointComponent);
     remove(prevPointEditComponent);
   }
 
   destroy() {
-    remove(this.#pointComponent);
-    remove(this.#pointEditComponent);
+    remove(this.#waypointComponent);
+    remove(this.#waypointEditComponent);
   }
 
   setSaving() {
     if (this.#mode === Mode.EDITING) {
-      this.#pointEditComponent.updateElement({
+      this.#waypointEditComponent.updateElement({
         isDisabled: true,
         isSaving: true
       });
@@ -90,7 +88,7 @@ export default class PointPresenter {
 
   setDeleting() {
     if (this.#mode === Mode.EDITING) {
-      this.#pointEditComponent.updateElement({
+      this.#waypointEditComponent.updateElement({
         isDisabled: true,
         isDeleting: true
       });
@@ -99,38 +97,37 @@ export default class PointPresenter {
 
   setAborting() {
     if (this.#mode === Mode.DEFAULT) {
-      this.#pointComponent.shake();
+      this.#waypointComponent.shake();
       return;
     }
 
     const resetFormState = () => {
-      this.#pointEditComponent.updateElement({
+      this.#waypointEditComponent.updateElement({
         isDisabled: false,
         isSaving: false,
         isDeleting: false,
       });
     };
 
-    this.#pointEditComponent.shake(resetFormState);
+    this.#waypointEditComponent.shake(resetFormState);
   }
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
-      this.#pointEditComponent.reset(this.#waypoint);
+      this.#waypointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
     }
   }
 
-
   #replacePointToEditForm() {
-    replace(this.#pointEditComponent, this.#pointComponent);
+    replace(this.#waypointEditComponent, this.#waypointComponent);
     document.addEventListener('keydown', this.#escKeydownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   }
 
   #replaceEditFormToPoint() {
-    replace(this.#pointComponent, this.#pointEditComponent);
+    replace(this.#waypointComponent, this.#waypointEditComponent);
     document.removeEventListener('keydown', this.#escKeydownHandler);
     this.#mode = Mode.DEFAULT;
   }
@@ -138,7 +135,7 @@ export default class PointPresenter {
   #escKeydownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      this.#pointEditComponent.reset(this.#waypoint);
+      this.#waypointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
     }
   };
@@ -148,31 +145,26 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (update) => {
-    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
-    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление.
-    //к ним относятстя изменение дат и цены
     const isMinorUpdate =
       !isDatesEqual(this.#waypoint.dateFrom, update.dateFrom) ||
       !isDatesEqual(this.#waypoint.dateTo, update.dateTo) ||
       !isPriceEqual(this.#waypoint.basePrice, update.basePrice);
 
-
     this.#handleDataChange(
-      UserAction.UPDATE_POINT,
+      UserAction.UPDATE_WAYPOINT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
   };
 
-
   #handleRollupBtnClick = () => {
-    this.#pointEditComponent.reset(this.#waypoint);
+    this.#waypointEditComponent.reset(this.#waypoint);
     this.#replaceEditFormToPoint();
   };
 
   #handleDeleteClick = (waypoint) => {
     this.#handleDataChange(
-      UserAction.DELETE_POINT,
+      UserAction.DELETE_WAYPOINT,
       UpdateType.MINOR,
       waypoint,
     );

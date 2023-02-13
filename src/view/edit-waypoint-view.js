@@ -5,8 +5,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { MIN_FLATPICKER_DATE } from '../const.js';
 import he from 'he';
 
-const createEditPointTemplate = (point, destinations, offersByType, isNewWaypoint) => {
-  const { type, offers, destination, basePrice, dateFrom, dateTo, id, isDisabled, isSaving, isDeleting } = point;
+const createEditWaypointTemplate = (waypoint, destinations, offersByType, isNewWaypoint) => {
+  const { type, offers, destination, basePrice, dateFrom, dateTo, id, isDisabled, isSaving, isDeleting } = waypoint;
   const isValidForm = destination && basePrice;
   const saveBtnText = isSaving ? 'Saving...' : 'Save';
   const deleteBtnText = isDeleting ? 'Deleting...' : 'Delete';
@@ -239,7 +239,7 @@ export default class EditWaypointView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#allDestinations, this.#allOffers, this.#isNewWaypoint);
+    return createEditWaypointTemplate(this._state, this.#allDestinations, this.#allOffers, this.#isNewWaypoint);
   }
 
   _restoreHandlers() {
@@ -328,9 +328,9 @@ export default class EditWaypointView extends AbstractStatefulView {
     });
   };
 
-  reset = (point) => {
+  reset = (waypoint) => {
     this.updateElement(
-      EditWaypointView.parsePointToState(point)
+      EditWaypointView.parsePointToState(waypoint)
     );
   };
 
@@ -396,19 +396,19 @@ export default class EditWaypointView extends AbstractStatefulView {
     this.#handleDeleteClick(EditWaypointView.parseStateToPoint(this._state));
   };
 
-  static parsePointToState = (point) => ({
-    ...point,
+  static parsePointToState = (waypoint) => ({
+    ...waypoint,
     isDisabled: false,
     isSaving: false,
     isDeleting: false
   });
 
   static parseStateToPoint = (state) => {
-    const point = { ...state };
-    delete point.isDisabled;
-    delete point.isDeleting;
-    delete point.isSaving;
+    const waypoint = { ...state };
+    delete waypoint.isDisabled;
+    delete waypoint.isDeleting;
+    delete waypoint.isSaving;
 
-    return point;
+    return waypoint;
   };
 }

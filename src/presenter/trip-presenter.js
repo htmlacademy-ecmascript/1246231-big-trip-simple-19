@@ -111,7 +111,7 @@ export default class TripPresenter {
         }
         break;
 
-      case UserAction.ADD_POINT:
+      case UserAction.ADD_WAYPOINT:
         this.#newWaypointPresenter.setSaving();
         try {
           await this.#waypointsModel.addPoint(updateType, update);

@@ -15,7 +15,7 @@ const SortType = {
 
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
-  ADD_POINT: 'ADD_POINT',
+  ADD_WAYPOINT: 'ADD_WAYPOINT',
   DELETE_POINT: 'DELETE_POINT',
 };
 

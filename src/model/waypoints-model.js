@@ -4,15 +4,14 @@ import Observable from '../framework/observable.js';
 import { UpdateType } from '../const.js';
 
 export default class WaypointsModel extends Observable {
-  #pointsApiService = null;
+  #waypointsApiService = null;
   #waypoints = [];
   #offers = [];
   #destinations = [];
 
-  constructor({ pointsApiService }) {
+  constructor({ waypointsApiService }) {
     super();
-    this.#pointsApiService = pointsApiService;
-
+    this.#waypointsApiService = waypointsApiService;
   }
 
   get waypoints() {
@@ -35,9 +34,9 @@ export default class WaypointsModel extends Observable {
 
   init = async () => {
     try {
-      const points = await this.#pointsApiService.points;
-      const offers = await this.#pointsApiService.offers;
-      const destinations = await this.#pointsApiService.destinations;
+      const points = await this.#waypointsApiService.points;
+      const offers = await this.#waypointsApiService.offers;
+      const destinations = await this.#waypointsApiService.destinations;
 
       this.#waypoints = points.map(this.#adaptToClient);
       this.#offers = offers;
@@ -58,7 +57,7 @@ export default class WaypointsModel extends Observable {
     }
 
     try {
-      const response = await this.#pointsApiService.updatePoint(update);
+      const response = await this.#waypointsApiService.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
 
       this.#waypoints = [
@@ -74,7 +73,7 @@ export default class WaypointsModel extends Observable {
 
   async addPoint(updateType, update) {
     try {
-      const response = await this.#pointsApiService.addPoint(update);
+      const response = await this.#waypointsApiService.addPoint(update);
       const newPoint = this.#adaptToClient(response);
       this.#waypoints = [newPoint, ...this.#waypoints];
       this._notify(updateType, newPoint);
@@ -91,7 +90,7 @@ export default class WaypointsModel extends Observable {
     }
 
     try {
-      await this.#pointsApiService.deletePoint(update);
+      await this.#waypointsApiService.deletePoint(update);
       this.#waypoints = [
         ...this.#waypoints.slice(0, index),
         ...this.#waypoints.slice(index + 1),
@@ -110,7 +109,6 @@ export default class WaypointsModel extends Observable {
       dateTo: new Date(point['date_to'])
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedPoint['base_price'];
     delete adaptedPoint['date_from'];
     delete adaptedPoint['date_to'];

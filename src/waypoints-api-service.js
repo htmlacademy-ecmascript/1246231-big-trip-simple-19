@@ -7,7 +7,7 @@ const Method = {
   DELETE: 'DELETE',
 };
 
-export default class PointsApiService extends ApiService {
+export default class WaypointsApiService extends ApiService {
 
   get points() {
     return this._load({ url: 'points' })
